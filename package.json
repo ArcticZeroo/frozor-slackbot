@@ -1,6 +1,6 @@
 {
   "name": "frozor-slackbot",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "SlackBot written in node with my own frozor-slack API base.",
   "main": "SlackBot.js",
   "keywords": [
