@@ -11,8 +11,9 @@
   "author": "ArcticZeroo",
   "license": "ISC",
   "dependencies": {
-    "frozor-hybrid": "latest",
     "frozor-logger": "latest",
-    "frozor-slack": "latest"
+    "frozor-slack": "latest",
+    "frozor-slack-messages": "^1.1.0",
+    "frozor-slack-user": "^1.0.0"
   }
 }

@@ -1,10 +1,13 @@
 var EventEmitter   = require('events');
+
+/* Frozor Dependencies */
 var log            = require('frozor-logger');
 var slackAPI       = require('frozor-slack');
-var Hybrid         = require('frozor-hybrid');
-var SlackMessage   = Hybrid.Objects.SlackMessage;
-var CommandMessage = Hybrid.Objects.CommandMessage.slack;
-var User           = Hybrid.Objects.User;
+var SlackMessages  = require('frozor-slack-messages');
+var User           = require('frozor-slack-user');
+
+var SlackMessage   = SlackMessages.SlackMessage;
+var CommandMessage = SlackMessages.CommandMessage;
 
 class SlackBot extends EventEmitter{
     constructor(token, auto_rtm){
@@ -91,7 +94,13 @@ class SlackBot extends EventEmitter{
     }
 
     chat(channel, message, callback){
-        this.getUtils().chat.postMessage(channel, message, true, {}, callback);
+        this.getUtils().chat.postMessage(channel, message, true, {
+            as_user: true
+        }, callback);
+    }
+
+    reply(slackMessage, message, callback){
+        this.chat(slackMessage.getChannel(), message, callback);
     }
 }
 
