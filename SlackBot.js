@@ -1,7 +1,8 @@
 var EventEmitter   = require('events');
 
 /* Frozor Dependencies */
-var log            = require('frozor-logger');
+var Logger         = require('frozor-logger');
+var log            = new Logger();
 var slackAPI       = require('frozor-slack');
 var SlackMessages  = require('frozor-slack-messages');
 var User           = require('frozor-slack-user');
@@ -24,10 +25,10 @@ class SlackBot extends EventEmitter{
 
         this._bot.auth.test({}, (response)=>{
            if(response.ok){
-               log.info(`Successfully authenticated with the Slack API!`, 'SLACKBOT');
+               log.info(`Successfully authenticated with the Slack API!`);
                if(this._auto_rtm) this.getBot().rtm.start();
            }
-           else log.error(`Unable to authenticate with Slack API: ${response.error}`, 'SLACKBOT');
+           else log.error(`Unable to authenticate with Slack API: ${response.error}`);
         });
 
         this.registerEvents();
@@ -38,7 +39,7 @@ class SlackBot extends EventEmitter{
         var emitter = this.getBot();
 
         emitter.on('hello', ()=>{
-            log.info(`Connected to RTM at ${log.chalk.magenta(this.getBot().info.getTeamName())} as ${log.chalk.magenta(`${this.getBot().info.getUserName()}@${this.getBot().info.getUserID()}`)}`, 'SLACKBOT');
+            log.info(`Connected to RTM at ${log.chalk.cyan(this.getBot().info.getTeamName())} as ${log.chalk.magenta(`${this.getBot().info.getUserName()}@${this.getBot().info.getUserID()}`)}`);
             this.emit('hello');
         });
 
