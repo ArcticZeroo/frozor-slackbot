@@ -110,6 +110,10 @@ class SlackBot extends EventEmitter{
             attachments: attachments
         }, callback);
     }
+
+    sendAttachmentMessage(slackMessage, attachments, callback){
+        this.sendWithAttachments(slackMessage, ' ', attachments, callback);
+    }
 }
 
 module.exports = SlackBot;
