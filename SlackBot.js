@@ -103,6 +103,12 @@ class SlackBot extends EventEmitter{
     reply(slackMessage, message, callback){
         this.chat(slackMessage.getChannel(), message, callback);
     }
+
+    sendWithAttachments(slackMessage, message, attachments, callback){
+        this.getUtils().chat.postMessage(slackMessage.getChannel(), message, true, {
+            attachments: attachments
+        }, callback);
+    }
 }
 
 module.exports = SlackBot;
