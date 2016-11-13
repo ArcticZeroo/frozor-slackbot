@@ -2,7 +2,7 @@ var EventEmitter   = require('events');
 
 /* Frozor Dependencies */
 var Logger         = require('frozor-logger');
-var log            = new Logger();
+var log            = new Logger('SLACKBOT');
 var slackAPI       = require('frozor-slack');
 var SlackMessages  = require('frozor-slack-messages');
 var User           = require('frozor-slack-user');
