@@ -106,6 +106,7 @@ class SlackBot extends EventEmitter{
 
     sendWithAttachments(slackMessage, message, attachments, callback){
         this.getUtils().chat.postMessage(slackMessage.getChannel(), message, true, {
+            as_user: true,
             attachments: attachments
         }, callback);
     }
