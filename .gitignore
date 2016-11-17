@@ -56,3 +56,7 @@ $RECYCLE.BIN/
 
 # Windows shortcuts
 *.lnk
+.gitignore
+.idea/jsLibraryMappings.xml
+.idea/workspace.xml
+node_modules/

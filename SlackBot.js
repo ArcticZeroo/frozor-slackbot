@@ -17,6 +17,7 @@ class SlackBot extends EventEmitter{
         this._bot          = null;
         this._utils        = null;
         this._auto_rtm     = auto_rtm || false;
+        this.user          = null;
     }
 
     initialize(){
@@ -26,9 +27,13 @@ class SlackBot extends EventEmitter{
         this._bot.auth.test({}, (response)=>{
            if(response.ok){
                log.info(`Successfully authenticated with the Slack API!`);
+               this.emit('authSuccess');
                if(this._auto_rtm) this.getBot().rtm.start();
            }
-           else log.error(`Unable to authenticate with Slack API: ${response.error}`);
+           else{
+               log.error(`Unable to authenticate with Slack API: ${response.error}`);
+               this.emit('authFail');
+           }
         });
 
         this.registerEvents();
@@ -100,6 +105,11 @@ class SlackBot extends EventEmitter{
         }, callback);
     }
 
+    /**
+     * @param slackMessage
+     * @param message
+     * @param callback
+     */
     reply(slackMessage, message, callback){
         this.chat(slackMessage.getChannel(), message, callback);
     }
