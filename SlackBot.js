@@ -2,7 +2,6 @@ var EventEmitter   = require('events');
 
 /* Frozor Dependencies */
 var Logger         = require('frozor-logger');
-var log            = new Logger('SLACKBOT');
 var slackAPI       = require('frozor-slack');
 var SlackMessages  = require('frozor-slack-messages');
 var User           = require('frozor-slack-user');
@@ -11,27 +10,28 @@ var SlackMessage   = SlackMessages.SlackMessage;
 var CommandMessage = SlackMessages.CommandMessage;
 
 class SlackBot extends EventEmitter{
-    constructor(token, auto_rtm){
+    constructor(token, auto_rtm, prefix){
         super();
-        this._token        = token;
-        this._bot          = null;
-        this._utils        = null;
-        this._auto_rtm     = auto_rtm || false;
+        this.token        = token;
+        this.bot          = null;
+        this.utils        = null;
+        this.auto_rtm     = auto_rtm || false;
         this.user          = null;
+        this.log           = new Logger(prefix);
     }
 
     initialize(){
-        this._bot   = slackAPI.createBot(this.getToken());
-        this._utils = slackAPI.utils.getUtils(this._bot);
+        this.bot   = slackAPI.createBot(this.getToken());
+        this.utils = slackAPI.utils.getUtils(this.bot);
 
-        this._bot.auth.test({}, (response)=>{
+        this.bot.auth.test({}, (response)=>{
            if(response.ok){
-               log.info(`Successfully authenticated with the Slack API!`);
+               this.log.info(`Successfully authenticated with the Slack API!`);
                this.emit('authSuccess');
-               if(this._auto_rtm) this.getBot().rtm.start();
+               if(this.auto_rtm) this.getBot().rtm.start();
            }
            else{
-               log.error(`Unable to authenticate with Slack API: ${response.error}`);
+               this.log.error(`Unable to authenticate with Slack API: ${response.error}`);
                this.emit('authFail');
            }
         });
@@ -44,7 +44,7 @@ class SlackBot extends EventEmitter{
         var emitter = this.getBot();
 
         emitter.on('hello', ()=>{
-            log.info(`Connected to RTM at ${log.chalk.cyan(this.getBot().info.getTeamName())} as ${log.chalk.magenta(`${this.getBot().info.getUserName()}@${this.getBot().info.getUserID()}`)}`);
+            this.log.info(`Connected to RTM at ${this.log.chalk.cyan(this.getBot().info.getTeamName())} as ${this.log.chalk.magenta(`${this.getBot().info.getUserName()}@${this.getBot().info.getUserID()}`)}`);
             this.emit('hello');
         });
 
@@ -72,15 +72,15 @@ class SlackBot extends EventEmitter{
     }
 
     getBot(){
-        return this._bot;
+        return this.bot;
     }
 
     getToken(){
-        return this._token;
+        return this.token;
     }
     
     getUtils(){
-        return this._utils;
+        return this.utils;
     }
 
     getUserName(){
