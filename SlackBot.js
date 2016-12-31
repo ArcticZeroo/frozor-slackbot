@@ -22,6 +22,7 @@ class SlackBot extends EventEmitter{
 
     initialize(){
         this.bot   = slackAPI.createBot(this.getToken());
+        this.api   = this.bot;
         this.utils = slackAPI.utils.getUtils(this.bot);
 
         this.bot.auth.test({}, (response)=>{
