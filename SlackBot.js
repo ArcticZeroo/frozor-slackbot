@@ -3,6 +3,8 @@ const EventEmitter = require('events');
 const Logger = require('frozor-logger');
 const SlackAPI = require('frozor-slack');
 const SlackMessage = require('./SlackMessage');
+const SlackCommandMessage = require('./SlackCommandMessage');
+const SlackUser = require('./SlackUser');
 
 class SlackBot extends EventEmitter{
     constructor(token, rtm = true, prefix){
@@ -58,16 +60,20 @@ class SlackBot extends EventEmitter{
         this.api.on('message', (message)=>{
             if(message.subtype) return;
 
-            this.api.storage.self.get((err, res)=>{
+            this.api.storage.self.get((err, self)=>{
                 if(err) return;
 
-                if(message.user == res.id) return;
+                if(message.user == self.id) return;
 
-                let slackMessage = new SlackMessage(message);
+                let slackMessage = new SlackMessage(message, this);
 
                 this.emit('message', slackMessage);
 
+                if(message.text.startsWith(SlackUser.getMention(self.id))){
+                    let commandMessage = new SlackCommandMessage(message, this);
 
+                    this.emit('command', commandMessage);
+                }
             });
         });
     }

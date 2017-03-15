@@ -1,7 +1,7 @@
 const SlackUser = require('./SlackUser');
 
 class SlackMessage{
-    constructor(bot, msg){
+    constructor(msg, bot){
         Object.assign(this, msg);
 
         this.user = new SlackUser(this.user);
