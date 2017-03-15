@@ -15,22 +15,28 @@ class SlackBot extends EventEmitter{
 
         this.initialize = this.init;
     }
+    
+    error(msg){
+        this.emit('error', msg);
+
+        this.log.error(msg);
+    }
 
     init(){
         this.api.methods.auth.test((err, res)=>{
             if(err){
-                this.log.error(`Unable to authenticate with the Slack API: ${this.log.chalk.red(err)}`);
+                this.error(`Unable to authenticate with the Slack API: ${this.log.chalk.red(err)}`);
             }else{
                 if(this.rtm){
                     this.api.rtm.start();
 
                     this.registerEvents();
 
-                    this.api.on('rtmFail', ()=> this.log.error('RTM hit a fatal error and was unable to start.'));
+                    this.api.on('rtmFail', ()=> this.error('RTM hit a fatal error and was unable to start.'));
 
-                    this.api.on('rtmClose', (code, desc)=> this.log.error(`RTM has closed (Code ${this.log.chalk.magenta(code)}): ${this.log.chalk.cyan(desc)}`));
-                    this.api.on('rtmConnectFailed', ()=> this.log.error('Unable to connect to RTM.'));
-                    this.api.on('rtmError', (error)=> this.log.error(`RTM ran into an error: ${this.log.chalk.error(error)}`));
+                    this.api.on('rtmClose', (code, desc)=> this.error(`RTM has closed (Code ${this.log.chalk.magenta(code)}): ${this.log.chalk.cyan(desc)}`));
+                    this.api.on('rtmConnectFailed', ()=> this.error('Unable to connect to RTM.'));
+                    this.api.on('rtmError', (error)=> this.error(`RTM ran into an error: ${this.log.chalk.error(error)}`));
                 }
 
                 this.api.storage.team.get((err,res)=>{
@@ -51,9 +57,9 @@ class SlackBot extends EventEmitter{
                     this.api.storage.self.get((e,self)=>{
                         if(!e){
                             this.log.info(`Connected to RTM as ${this.log.chalk.cyan(self.name)}@${this.log.chalk.magenta(team.name)}`);
-                        }else this.log.error(e)
+                        }else this.error(e)
                     });
-                }else this.log.error(e)
+                }else this.error(e)
             });
         });
 
