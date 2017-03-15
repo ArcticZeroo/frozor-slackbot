@@ -1,0 +1,15 @@
+{
+  "name": "frozor-slackbot",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "frozor-logger": "^3.0.8",
+    "frozor-slack": "^3.0.0"
+  }
+}
