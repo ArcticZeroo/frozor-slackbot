@@ -13,6 +13,8 @@ class SlackBot extends EventEmitter{
         this.rtm = rtm;
         this.log = new Logger((prefix)?`SLACK|${prefix}`:'SLACK', prefix||'slackbot');
 
+        this.self = null;
+
         this.initialize = this.init;
     }
     
@@ -56,6 +58,7 @@ class SlackBot extends EventEmitter{
                 if(!e){
                     this.api.storage.self.get((e,self)=>{
                         if(!e){
+                            this.self = self;
                             this.log.info(`Connected to RTM as ${this.log.chalk.cyan(self.name)}@${this.log.chalk.magenta(team.name)}`);
                         }else this.error(e)
                     });
@@ -66,21 +69,17 @@ class SlackBot extends EventEmitter{
         this.api.on('message', (message)=>{
             if(message.subtype) return;
 
-            this.api.storage.self.get((err, self)=>{
-                if(err) return;
+            if(message.user == this.self.id) return;
 
-                if(message.user == self.id) return;
+            let slackMessage = new SlackMessage(message, this);
 
-                let slackMessage = new SlackMessage(message, this);
+            this.emit('message', slackMessage);
 
-                this.emit('message', slackMessage);
+            if(message.text.startsWith(SlackUser.getMention(this.self.id))){
+                let commandMessage = new SlackCommandMessage(message, this);
 
-                if(message.text.startsWith(SlackUser.getMention(self.id))){
-                    let commandMessage = new SlackCommandMessage(message, this);
-
-                    this.emit('command', commandMessage);
-                }
-            });
+                this.emit('command', commandMessage);
+            }
         });
     }
 
