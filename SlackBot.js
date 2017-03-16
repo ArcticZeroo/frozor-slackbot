@@ -5,6 +5,7 @@ const SlackAPI = require('frozor-slack');
 const SlackMessage = require('./SlackMessage');
 const SlackCommandMessage = require('./SlackCommandMessage');
 const SlackUser = require('./SlackUser');
+const ChatHandler = require('./ChatHandler');
 
 class SlackBot extends EventEmitter{
     constructor(token, rtm = true, prefix){
@@ -12,6 +13,8 @@ class SlackBot extends EventEmitter{
         this.api = new SlackAPI(token);
         this.rtm = rtm;
         this.log = new Logger((prefix)?`SLACK|${prefix}`:'SLACK', prefix||'slackbot');
+
+        this.chatHandler = new ChatHandler();
 
         this.self = null;
 
@@ -72,6 +75,8 @@ class SlackBot extends EventEmitter{
             if(message.user == this.self.id) return;
 
             let slackMessage = new SlackMessage(message, this);
+
+            this.chatHandler.handle(slackMessage);
 
             this.emit('message', slackMessage);
 
