@@ -4,21 +4,25 @@ class ChatHandler{
     }
 
     addMatch(regex, action){
-        this.actions[regex] = action;
+        this.actions[regex] = {
+            regex: regex,
+            action: action
+        };
     }
 
     handle(message){
-        if(this.actions.size > 0){
-            for(let regex in this.actions){
-                if(regex.test(message.text)){
-                    this.actions[regex](message);
+        let matches = Object.keys(this.actions);
+        if(matches.length > 0){
+            for(let match of matches){
+                if(this.actions[match].regex.test(message.text)){
+                    this.actions[match].action(message);
                 }
             }
         }
     }
 
     static getWildcardString(inner){
-       return `.*(${inner}).*`;
+        return `.*(${inner}).*`;
     }
 
     static getWildcardRegex(inner){
