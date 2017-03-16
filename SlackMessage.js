@@ -8,7 +8,7 @@ class SlackMessage{
         this.bot = bot;
     }
 
-    reply(msg, mention = false, args = {}, cb){
+    reply(msg, mention = true, args = {}, cb){
         this.bot.chat(this.channel, (mention)?`${this.user.mention()} ${msg}`:msg, args, cb);
     }
 }
