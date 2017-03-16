@@ -86,6 +86,8 @@ class SlackBot extends EventEmitter{
                 this.emit('command', commandMessage);
             }
         });
+
+        this.api.on('error', this.error);
     }
 
     chat(channel, msg, args, cb){
