@@ -1,19 +1,19 @@
 class ChatHandler{
     constructor(){
-        this.actions = new Map();
+        this.actions = {};
     }
 
     addMatch(regex, action){
-        this.actions.set(regex, action);
+        this.actions[regex] = action;
     }
 
     handle(message){
         if(this.actions.size > 0){
-            this.actions.forEach((match, action)=>{
-                if(match.test(message)){
-                    action(message);
+            for(let regex in this.actions){
+                if(regex.test(message.text)){
+                    this.actions[regex](message);
                 }
-            });
+            }
         }
     }
 
