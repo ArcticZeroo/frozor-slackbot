@@ -11,7 +11,7 @@ class ChatHandler{
         if(this.actions.size > 0){
             this.actions.forEach((match, action)=>{
                 if(match.test(message)){
-                    action();
+                    action(message);
                 }
             });
         }
