@@ -13,6 +13,7 @@ class SlackBot extends EventEmitter{
         this.api = new SlackAPI(token);
         this.rtm = rtm;
         this.log = new Logger((prefix)?`SLACK|${prefix}`:'SLACK', prefix||'slackbot');
+        this.prefix = prefix;
 
         this.chatHandler = new ChatHandler();
 
