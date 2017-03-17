@@ -1,6 +1,6 @@
 class ChatHandler{
-    constructor(){
-        this.actions = {};
+    constructor(initial = {}){
+        this.actions = initial;
     }
 
     addMatch(regex, action){
