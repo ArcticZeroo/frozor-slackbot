@@ -9,7 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "frozor-logger": "^3.0.11",
-    "frozor-slack": "^3.0.1"
+    "frozor-logger": "^3.0.x",
+    "frozor-slack": "^3.0.x"
   }
 }
