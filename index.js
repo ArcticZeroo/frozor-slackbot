@@ -1,6 +1,6 @@
 module.exports = {
-    SlackBot: require('./SlackBot'),
-    SlackMessage: require('./SlackMessage'),
-    SlackUser: require('./SlackUser'),
-    ChatHandler: require('./ChatHandler')
+    SlackBot: require('./lib/SlackBot'),
+    SlackMessage: require('./lib/SlackMessage'),
+    SlackUser: require('./lib/SlackUser'),
+    ChatHandler: require('./lib/ChatHandler')
 };
