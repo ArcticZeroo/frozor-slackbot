@@ -30,6 +30,7 @@ class SlackBot extends EventEmitter{
     }
 
     init(){
+        this.log.debug(`Initializing ${this.log.chalk.cyan(this.prefix||'SlackBot')}...`, 'INIT');
         this.api.methods.auth.test((err, res)=>{
             if(err){
                 this.error(`Unable to authenticate with the Slack API: ${this.log.chalk.red(err)}`);
@@ -50,7 +51,7 @@ class SlackBot extends EventEmitter{
                     if(err){
                         this.log.info(`Authenticated with the Slack API!`);
                     }else{
-                        this.log.info(`Authenticated with the Slack API for ${this.log.chalk.cyan(res.name)}!`);
+                        this.log.info(`Authenticated with the Slack API as ${this.log.chalk.cyan(res.name)}!`);
                     }
                 });
             }
