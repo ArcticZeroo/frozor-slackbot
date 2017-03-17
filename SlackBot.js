@@ -10,9 +10,10 @@ const ChatHandler = require('./ChatHandler');
 class SlackBot extends EventEmitter{
     constructor(token, rtm = true, prefix){
         super();
-        this.api = new SlackAPI(token, prefix);
+        this.getLogPrefix = ()=> (prefix)?`SLACK|${prefix}`:'SLACK';
+        this.api = new SlackAPI(token, this.getLogPrefix());
         this.rtm = rtm;
-        this.log = new Logger((prefix)?`SLACK|${prefix}`:'SLACK', prefix||'slackbot');
+        this.log = new Logger(this.getLogPrefix(), prefix||'slackbot');
         this.prefix = prefix;
 
         this.chatHandler = new ChatHandler();
